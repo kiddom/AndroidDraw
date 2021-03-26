@@ -3,19 +3,20 @@ package com.divyanshu.androiddraw
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_view.view.*
 
 const val IMAGE_PATH = "image_path"
-class DrawAdapter(private val context: Context, private val imageList: ArrayList<String>) : androidx.recyclerview.widget.RecyclerView.Adapter<DrawAdapter.ViewHolder>(){
 
+class DrawAdapter(private val context: Context, private val imageList: ArrayList<String>) : RecyclerView.Adapter<DrawAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -28,17 +29,17 @@ class DrawAdapter(private val context: Context, private val imageList: ArrayList
         Glide.with(context).load(path).into(holder.drawImage)
         holder.drawImage.setOnClickListener {
             val intent = Intent(context, ImageActivity::class.java)
-            intent.putExtra(IMAGE_PATH,path)
+            intent.putExtra(IMAGE_PATH, path)
             context.startActivity(intent)
         }
     }
 
-    class ViewHolder(itemView: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val drawImage: ImageView = itemView.image_draw
     }
 
-    fun addItem(uri: Uri){
+    fun addItem(uri: Uri) {
         imageList.add(uri.toString())
-        notifyItemInserted(imageList.size-1)
+        notifyItemInserted(imageList.size - 1)
     }
 }

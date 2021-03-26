@@ -7,7 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 
-class CircleView(context: Context, attrs: AttributeSet): View(context, attrs) {
+class CircleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var mPaint = Paint()
     var radius = 8f
 
@@ -26,21 +26,21 @@ class CircleView(context: Context, attrs: AttributeSet): View(context, attrs) {
         val cX = width.div(2)
         val cY = height.div(2)
 
-        canvas.drawCircle(cX, cY, radius/2, mPaint)
+        canvas.drawCircle(cX, cY, radius / 2, mPaint)
     }
 
-    fun setCircleRadius(r: Float){
+    fun setCircleRadius(r: Float) {
         radius = r
         invalidate()
     }
 
-    fun setAlpha(newAlpha: Int){
-        val alpha = (newAlpha*255)/100
+    fun setAlpha(newAlpha: Int) {
+        val alpha = (newAlpha * 255) / 100
         mPaint.alpha = alpha
         invalidate()
     }
 
-    fun setColor(color: Int){
+    fun setColor(color: Int) {
         mPaint.color = color
         invalidate()
     }

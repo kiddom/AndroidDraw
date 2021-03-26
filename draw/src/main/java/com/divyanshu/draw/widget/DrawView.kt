@@ -1,16 +1,19 @@
 package com.divyanshu.draw.widget
 
 import android.content.Context
-import android.graphics.*
-import androidx.annotation.ColorInt
-import androidx.core.graphics.ColorUtils
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import java.util.LinkedHashMap
+import androidx.annotation.ColorInt
+import androidx.core.graphics.ColorUtils
+import java.util.*
 
 class DrawView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private var mPaths = LinkedHashMap<MyPath, PaintOptions>()
 
@@ -47,18 +50,23 @@ class DrawView @JvmOverloads constructor(
             mPaths = mLastPaths.clone() as LinkedHashMap<MyPath, PaintOptions>
             mLastPaths.clear()
             invalidate()
+
             return
         }
+
         if (mPaths.isEmpty()) {
             return
         }
+
         val lastPath = mPaths.values.lastOrNull()
         val lastKey = mPaths.keys.lastOrNull()
 
         mPaths.remove(lastKey)
+
         if (lastPath != null && lastKey != null) {
             mUndonePaths[lastKey] = lastPath
         }
+
         invalidate()
     }
 
@@ -77,19 +85,21 @@ class DrawView @JvmOverloads constructor(
         @ColorInt
         val alphaColor = ColorUtils.setAlphaComponent(newColor, mPaintOptions.alpha)
         mPaintOptions.color = alphaColor
+
         if (mIsStrokeWidthBarEnabled) {
             invalidate()
         }
     }
 
     fun setAlpha(newAlpha: Int) {
-        val alpha = (newAlpha*255)/100
+        val alpha = (newAlpha * 255) / 100
         mPaintOptions.alpha = alpha
         setColor(mPaintOptions.color)
     }
 
     fun setStrokeWidth(newStrokeWidth: Float) {
         mPaintOptions.strokeWidth = newStrokeWidth
+
         if (mIsStrokeWidthBarEnabled) {
             invalidate()
         }
@@ -102,6 +112,7 @@ class DrawView @JvmOverloads constructor(
         mIsSaving = true
         draw(canvas)
         mIsSaving = false
+
         return bitmap
     }
 
@@ -177,6 +188,7 @@ class DrawView @JvmOverloads constructor(
         }
 
         invalidate()
+
         return true
     }
 
@@ -185,5 +197,4 @@ class DrawView @JvmOverloads constructor(
         mPaintOptions.isEraserOn = isEraserOn
         invalidate()
     }
-
 }
