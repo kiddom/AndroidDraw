@@ -44,8 +44,7 @@ class MainActivity : AppCompatActivity() {
             recycler_view.adapter = adapter
         }
         fab_add_draw.setOnClickListener {
-            val intent = Intent(this, DrawingActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_DRAW)
+            DrawingActivity.startActivityForResult(this, REQUEST_CODE_DRAW)
         }
     }
 

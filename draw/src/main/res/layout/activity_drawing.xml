@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.DrawingActivity">
 
-    <com.divyanshu.draw.widget.DrawView
-        android:id="@+id/draw_view"
+    <ImageView
+        android:contentDescription="@null"
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_white" />
+
+    <com.divyanshu.draw.widget.DrawView
+        android:id="@+id/draw_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/image_close_drawing"
