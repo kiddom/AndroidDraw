@@ -1,7 +1,6 @@
 package com.divyanshu.draw.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -10,45 +9,14 @@ import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import com.divyanshu.draw.R
+import com.divyanshu.draw.result.contract.CreateDrawingActivityResultContract
 import com.divyanshu.draw.util.ImageUtils
 import kotlinx.android.synthetic.main.activity_drawing.*
 import kotlinx.android.synthetic.main.color_palette_view.*
 import java.io.ByteArrayOutputStream
 
 class DrawingActivity : AppCompatActivity() {
-    companion object {
-        private const val BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY = "BackgroundImageUrlString"
-
-        private fun createIntent(context: Context, backgroundImageUrlString: String?): Intent {
-            val intent = Intent(context, DrawingActivity::class.java).apply {
-                if (backgroundImageUrlString != null) {
-                    val bundle = Bundle().apply {
-                        putString(BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY, backgroundImageUrlString)
-                    }
-
-                    putExtras(bundle)
-                }
-            }
-
-            return intent
-        }
-
-        fun startActivityForResult(activity: Activity, requestCode: Int, backgroundImageUrlString: String? = null) {
-            val intent = createIntent(activity, backgroundImageUrlString)
-
-            activity.startActivityForResult(intent, requestCode)
-        }
-
-        fun startActivityForResult(fragment: Fragment, requestCode: Int, backgroundImageUrlString: String? = null) {
-            val context = fragment.requireContext()
-            val intent = createIntent(context, backgroundImageUrlString)
-
-            fragment.startActivityForResult(intent, requestCode)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -78,13 +46,16 @@ class DrawingActivity : AppCompatActivity() {
     }
 
     private fun setBackgroundIfNeeded() {
-        val extras = intent.extras!!
-        val backgroundImageUrlStringProvided = extras.containsKey(BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)
+        val extras = intent.extras
 
-        if (backgroundImageUrlStringProvided) {
-            val backgroundImageUrlString = extras.getString(BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)!!
+        if (extras != null) {
+            val backgroundImageUrlStringProvided = extras.containsKey(CreateDrawingActivityResultContract.BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)
 
-            ImageUtils.load(backgroundImageUrlString, background)
+            if (backgroundImageUrlStringProvided) {
+                val backgroundImageUrlString = extras.getString(CreateDrawingActivityResultContract.BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)!!
+
+                ImageUtils.load(backgroundImageUrlString, background)
+            }
         }
     }
 

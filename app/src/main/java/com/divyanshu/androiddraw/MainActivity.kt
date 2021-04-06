@@ -1,9 +1,7 @@
 package com.divyanshu.androiddraw
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,38 +11,52 @@ import android.os.Environment
 import android.util.Log
 import android.view.WindowManager
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.divyanshu.draw.activity.DrawingActivity
+import com.divyanshu.draw.result.contract.CreateDrawingActivityResultContract
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
-private const val REQUEST_CODE_DRAW = 101
-private const val PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 102
-
 class MainActivity : AppCompatActivity() {
     lateinit var adapter: DrawAdapter
+
+    private val createDrawingActivityResultLauncher = registerForActivityResult(CreateDrawingActivityResultContract) {
+        if (it != null) {
+            val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+            showSaveDialog(bitmap)
+        }
+    }
+
+    private val requestPermissionActivityResultLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        if (it) {
+            adapter = DrawAdapter(this, getFilesPath())
+            recycler_view.adapter = adapter
+        } else {
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val writeExternalStoragePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+        if (ContextCompat.checkSelfPermission(this, writeExternalStoragePermission)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
+            requestPermissionActivityResultLauncher.launch(writeExternalStoragePermission)
         } else {
             adapter = DrawAdapter(this, getFilesPath())
             recycler_view.adapter = adapter
         }
+
         fab_add_draw.setOnClickListener {
-            DrawingActivity.startActivityForResult(this, REQUEST_CODE_DRAW)
+            createDrawingActivityResultLauncher.launch(null)
         }
     }
 
@@ -59,18 +71,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         return resultList
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data != null && resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                REQUEST_CODE_DRAW -> {
-                    val result = data.getByteArrayExtra("bitmap")
-                    val bitmap = BitmapFactory.decodeByteArray(result, 0, result.size)
-                    showSaveDialog(bitmap)
-                }
-            }
-        }
     }
 
     private fun showSaveDialog(bitmap: Bitmap) {
@@ -88,22 +88,6 @@ class MainActivity : AppCompatActivity() {
         val dialog = alertDialog.create()
         dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog.show()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    adapter = DrawAdapter(this, getFilesPath())
-                    recycler_view.adapter = adapter
-                } else {
-                    finish()
-                }
-                return
-            }
-            else -> {
-            }
-        }
     }
 
     private fun saveImage(bitmap: Bitmap, fileName: String) {
