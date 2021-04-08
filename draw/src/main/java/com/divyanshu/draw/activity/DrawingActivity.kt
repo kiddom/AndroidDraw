@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.divyanshu.draw.R
 import com.divyanshu.draw.result.contract.CreateDrawingActivityResultContract
@@ -48,7 +49,16 @@ class DrawingActivity : AppCompatActivity() {
     private fun setBackgroundIfNeeded() {
         val extras = intent.extras
 
-        if (extras != null) {
+        if (extras == null) {
+            val layoutParams = background.layoutParams as ConstraintLayout.LayoutParams
+
+            with(layoutParams) {
+                height = 0
+                width = 0
+            }
+
+            background.layoutParams = layoutParams
+        } else {
             val backgroundImageUrlStringProvided = extras.containsKey(CreateDrawingActivityResultContract.BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)
 
             if (backgroundImageUrlStringProvided) {
