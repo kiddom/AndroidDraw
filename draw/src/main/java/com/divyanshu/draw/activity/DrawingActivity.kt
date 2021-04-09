@@ -40,6 +40,7 @@ class DrawingActivity : AppCompatActivity() {
             finish()
         }
 
+        setUpDrawCanvas()
         setUpDrawTools()
         colorSelector()
         setPaintAlpha()
@@ -47,9 +48,14 @@ class DrawingActivity : AppCompatActivity() {
     }
 
     private fun setBackgroundIfNeeded() {
-        val extras = intent.extras
+        val extras = intent.extras!!
+        val backgroundImageUrlStringProvided = extras.containsKey(CreateDrawingActivityResultContract.BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)
 
-        if (extras == null) {
+        if (backgroundImageUrlStringProvided) {
+            val backgroundImageUrlString = extras.getString(CreateDrawingActivityResultContract.BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)!!
+
+            ImageUtils.load(backgroundImageUrlString, background)
+        } else {
             val layoutParams = background.layoutParams as ConstraintLayout.LayoutParams
 
             with(layoutParams) {
@@ -58,14 +64,17 @@ class DrawingActivity : AppCompatActivity() {
             }
 
             background.layoutParams = layoutParams
-        } else {
-            val backgroundImageUrlStringProvided = extras.containsKey(CreateDrawingActivityResultContract.BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)
+        }
+    }
 
-            if (backgroundImageUrlStringProvided) {
-                val backgroundImageUrlString = extras.getString(CreateDrawingActivityResultContract.BACKGROUND_IMAGE_URL_STRING_EXTRA_KEY)!!
+    private fun setUpDrawCanvas() {
+        val extras = intent.extras!!
+        val canvasColorProvided = extras.containsKey(CreateDrawingActivityResultContract.CANVAS_COLOR_EXTRA_KEY)
 
-                ImageUtils.load(backgroundImageUrlString, background)
-            }
+        if (canvasColorProvided) {
+            val canvasColor = extras.getInt(CreateDrawingActivityResultContract.CANVAS_COLOR_EXTRA_KEY)
+
+            draw_view.canvasColor = canvasColor
         }
     }
 

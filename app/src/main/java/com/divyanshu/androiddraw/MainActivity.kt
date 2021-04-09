@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         fab_add_draw.setOnClickListener {
-            createDrawingActivityResultLauncher.launch(null)
+            CreateDrawingActivityResultContract.launch(createDrawingActivityResultLauncher)
         }
     }
 

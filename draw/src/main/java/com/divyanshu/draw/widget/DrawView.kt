@@ -15,6 +15,8 @@ import java.util.*
 class DrawView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+    var canvasColor = Color.WHITE
+
     private var mPaths = LinkedHashMap<MyPath, PaintOptions>()
 
     private var mLastPaths = LinkedHashMap<MyPath, PaintOptions>()
@@ -108,7 +110,7 @@ class DrawView @JvmOverloads constructor(
     fun getBitmap(): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        canvas.drawColor(Color.WHITE)
+        canvas.drawColor(canvasColor)
         mIsSaving = true
         draw(canvas)
         mIsSaving = false
