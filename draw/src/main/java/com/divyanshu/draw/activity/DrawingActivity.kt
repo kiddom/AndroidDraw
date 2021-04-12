@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
@@ -13,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.divyanshu.draw.R
 import com.divyanshu.draw.result.contract.CreateDrawingActivityResultContract
 import com.divyanshu.draw.util.ImageUtils
+import com.divyanshu.draw.util.TooltipUtils
 import kotlinx.android.synthetic.main.activity_drawing.*
 import kotlinx.android.synthetic.main.color_palette_view.*
 import java.io.ByteArrayOutputStream
@@ -45,6 +47,7 @@ class DrawingActivity : AppCompatActivity() {
         colorSelector()
         setPaintAlpha()
         setPaintWidth()
+        setUpTooltipTexts()
     }
 
     private fun setBackgroundIfNeeded() {
@@ -144,6 +147,19 @@ class DrawingActivity : AppCompatActivity() {
         image_draw_redo.setOnClickListener {
             draw_view.redo()
             toggleDrawTools(draw_tools, false)
+        }
+    }
+
+    private fun setUpTooltipTexts() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            TooltipUtils.setTooltipText(image_close_drawing, R.string.close)
+            TooltipUtils.setTooltipText(fab_send_drawing, R.string.save)
+            TooltipUtils.setTooltipText(image_draw_eraser, R.string.eraser)
+            TooltipUtils.setTooltipText(image_draw_width, R.string.stroke_width)
+            TooltipUtils.setTooltipText(image_draw_color, R.string.color)
+            TooltipUtils.setTooltipText(image_draw_opacity, R.string.opacity)
+            TooltipUtils.setTooltipText(image_draw_undo, R.string.undo)
+            TooltipUtils.setTooltipText(image_draw_redo, R.string.redo)
         }
     }
 
