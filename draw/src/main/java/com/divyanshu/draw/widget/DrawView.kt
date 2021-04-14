@@ -1,10 +1,7 @@
 package com.divyanshu.draw.widget
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -135,7 +132,14 @@ class DrawView @JvmOverloads constructor(
     }
 
     private fun changePaint(paintOptions: PaintOptions) {
-        mPaint.color = if (paintOptions.isEraserOn) Color.WHITE else paintOptions.color
+        if (paintOptions.isEraserOn) {
+            mPaint.color = Color.TRANSPARENT
+            mPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        } else {
+            mPaint.color = paintOptions.color
+            mPaint.xfermode = null
+        }
+
         mPaint.strokeWidth = paintOptions.strokeWidth
     }
 
