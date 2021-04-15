@@ -14,92 +14,92 @@ class DrawView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     var canvasColor = Color.WHITE
 
-    private var mPaths = LinkedHashMap<MyPath, PaintOptions>()
+    private var paths = LinkedHashMap<MyPath, PaintOptions>()
 
-    private var mLastPaths = LinkedHashMap<MyPath, PaintOptions>()
-    private var mUndonePaths = LinkedHashMap<MyPath, PaintOptions>()
+    private var lastPaths = LinkedHashMap<MyPath, PaintOptions>()
+    private var undonePaths = LinkedHashMap<MyPath, PaintOptions>()
 
-    private var mPaint = Paint()
-    private var mPath = MyPath()
-    private var mPaintOptions = PaintOptions()
+    private var paint = Paint()
+    private var path = MyPath()
+    private var paintOptions = PaintOptions()
 
-    private var mCurX = 0f
-    private var mCurY = 0f
-    private var mStartX = 0f
-    private var mStartY = 0f
-    private var mIsSaving = false
-    private var mIsStrokeWidthBarEnabled = false
+    private var curX = 0f
+    private var curY = 0f
+    private var startX = 0f
+    private var startY = 0f
+    private var isSaving = false
+    private var isStrokeWidthBarEnabled = false
 
     var isEraserOn = false
         private set
 
     init {
-        mPaint.apply {
-            color = mPaintOptions.color
+        paint.apply {
+            color = paintOptions.color
             style = Paint.Style.STROKE
             strokeJoin = Paint.Join.ROUND
             strokeCap = Paint.Cap.ROUND
-            strokeWidth = mPaintOptions.strokeWidth
+            strokeWidth = paintOptions.strokeWidth
             isAntiAlias = true
         }
     }
 
     fun undo() {
-        if (mPaths.isEmpty() && mLastPaths.isNotEmpty()) {
-            mPaths = mLastPaths.clone() as LinkedHashMap<MyPath, PaintOptions>
-            mLastPaths.clear()
+        if (paths.isEmpty() && lastPaths.isNotEmpty()) {
+            paths = lastPaths.clone() as LinkedHashMap<MyPath, PaintOptions>
+            lastPaths.clear()
             invalidate()
 
             return
         }
 
-        if (mPaths.isEmpty()) {
+        if (paths.isEmpty()) {
             return
         }
 
-        val lastPath = mPaths.values.lastOrNull()
-        val lastKey = mPaths.keys.lastOrNull()
+        val lastPath = paths.values.lastOrNull()
+        val lastKey = paths.keys.lastOrNull()
 
-        mPaths.remove(lastKey)
+        paths.remove(lastKey)
 
         if (lastPath != null && lastKey != null) {
-            mUndonePaths[lastKey] = lastPath
+            undonePaths[lastKey] = lastPath
         }
 
         invalidate()
     }
 
     fun redo() {
-        if (mUndonePaths.keys.isEmpty()) {
+        if (undonePaths.keys.isEmpty()) {
             return
         }
 
-        val lastKey = mUndonePaths.keys.last()
-        addPath(lastKey, mUndonePaths.values.last())
-        mUndonePaths.remove(lastKey)
+        val lastKey = undonePaths.keys.last()
+        addPath(lastKey, undonePaths.values.last())
+        undonePaths.remove(lastKey)
         invalidate()
     }
 
     fun setColor(newColor: Int) {
         @ColorInt
-        val alphaColor = ColorUtils.setAlphaComponent(newColor, mPaintOptions.alpha)
-        mPaintOptions.color = alphaColor
+        val alphaColor = ColorUtils.setAlphaComponent(newColor, paintOptions.alpha)
+        paintOptions.color = alphaColor
 
-        if (mIsStrokeWidthBarEnabled) {
+        if (isStrokeWidthBarEnabled) {
             invalidate()
         }
     }
 
     fun setAlpha(newAlpha: Int) {
         val alpha = (newAlpha * 255) / 100
-        mPaintOptions.alpha = alpha
-        setColor(mPaintOptions.color)
+        paintOptions.alpha = alpha
+        setColor(paintOptions.color)
     }
 
     fun setStrokeWidth(newStrokeWidth: Float) {
-        mPaintOptions.strokeWidth = newStrokeWidth
+        paintOptions.strokeWidth = newStrokeWidth
 
-        if (mIsStrokeWidthBarEnabled) {
+        if (isStrokeWidthBarEnabled) {
             invalidate()
         }
     }
@@ -108,74 +108,74 @@ class DrawView @JvmOverloads constructor(
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawColor(canvasColor)
-        mIsSaving = true
+        isSaving = true
         draw(canvas)
-        mIsSaving = false
+        isSaving = false
 
         return bitmap
     }
 
     fun addPath(path: MyPath, options: PaintOptions) {
-        mPaths[path] = options
+        paths[path] = options
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        for ((key, value) in mPaths) {
+        for ((key, value) in paths) {
             changePaint(value)
-            canvas.drawPath(key, mPaint)
+            canvas.drawPath(key, paint)
         }
 
-        changePaint(mPaintOptions)
-        canvas.drawPath(mPath, mPaint)
+        changePaint(paintOptions)
+        canvas.drawPath(path, paint)
     }
 
     private fun changePaint(paintOptions: PaintOptions) {
         if (paintOptions.isEraserOn) {
-            mPaint.color = Color.TRANSPARENT
-            mPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+            paint.color = Color.TRANSPARENT
+            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
         } else {
-            mPaint.color = paintOptions.color
-            mPaint.xfermode = null
+            paint.color = paintOptions.color
+            paint.xfermode = null
         }
 
-        mPaint.strokeWidth = paintOptions.strokeWidth
+        paint.strokeWidth = paintOptions.strokeWidth
     }
 
     fun clearCanvas() {
-        mLastPaths = mPaths.clone() as LinkedHashMap<MyPath, PaintOptions>
-        mPath.reset()
-        mPaths.clear()
+        lastPaths = paths.clone() as LinkedHashMap<MyPath, PaintOptions>
+        path.reset()
+        paths.clear()
         invalidate()
     }
 
     private fun actionDown(x: Float, y: Float) {
-        mPath.reset()
-        mPath.moveTo(x, y)
-        mCurX = x
-        mCurY = y
+        path.reset()
+        path.moveTo(x, y)
+        curX = x
+        curY = y
     }
 
     private fun actionMove(x: Float, y: Float) {
-        mPath.quadTo(mCurX, mCurY, (x + mCurX) / 2, (y + mCurY) / 2)
-        mCurX = x
-        mCurY = y
+        path.quadTo(curX, curY, (x + curX) / 2, (y + curY) / 2)
+        curX = x
+        curY = y
     }
 
     private fun actionUp() {
-        mPath.lineTo(mCurX, mCurY)
+        path.lineTo(curX, curY)
 
         // draw a dot on click
-        if (mStartX == mCurX && mStartY == mCurY) {
-            mPath.lineTo(mCurX, mCurY + 2)
-            mPath.lineTo(mCurX + 1, mCurY + 2)
-            mPath.lineTo(mCurX + 1, mCurY)
+        if (startX == curX && startY == curY) {
+            path.lineTo(curX, curY + 2)
+            path.lineTo(curX + 1, curY + 2)
+            path.lineTo(curX + 1, curY)
         }
 
-        mPaths[mPath] = mPaintOptions
-        mPath = MyPath()
-        mPaintOptions = PaintOptions(mPaintOptions.color, mPaintOptions.strokeWidth, mPaintOptions.alpha, mPaintOptions.isEraserOn)
+        paths[path] = paintOptions
+        path = MyPath()
+        paintOptions = PaintOptions(paintOptions.color, paintOptions.strokeWidth, paintOptions.alpha, paintOptions.isEraserOn)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -184,10 +184,10 @@ class DrawView @JvmOverloads constructor(
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                mStartX = x
-                mStartY = y
+                startX = x
+                startY = y
                 actionDown(x, y)
-                mUndonePaths.clear()
+                undonePaths.clear()
             }
             MotionEvent.ACTION_MOVE -> actionMove(x, y)
             MotionEvent.ACTION_UP -> actionUp()
@@ -200,7 +200,7 @@ class DrawView @JvmOverloads constructor(
 
     fun toggleEraser() {
         isEraserOn = !isEraserOn
-        mPaintOptions.isEraserOn = isEraserOn
+        paintOptions.isEraserOn = isEraserOn
         invalidate()
     }
 }
