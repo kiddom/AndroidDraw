@@ -30,8 +30,12 @@ class DrawView @JvmOverloads constructor(
     private var isSaving = false
     private var isStrokeWidthBarEnabled = false
 
-    var isEraserOn = false
-        private set
+    var isEraserOn: Boolean
+        get() = paintOptions.isEraserOn
+        set(value) {
+            paintOptions = paintOptions.copy(isEraserOn = value)
+            invalidate()
+        }
 
     init {
         paint.apply {
@@ -196,11 +200,5 @@ class DrawView @JvmOverloads constructor(
         invalidate()
 
         return true
-    }
-
-    fun toggleEraser() {
-        isEraserOn = !isEraserOn
-        paintOptions = paintOptions.copy(isEraserOn = isEraserOn)
-        invalidate()
     }
 }
