@@ -1,7 +1,9 @@
 package com.divyanshu.draw.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -19,7 +21,6 @@ class DrawView @JvmOverloads constructor(
     private var lastPaths = LinkedHashMap<MyPath, PaintOptions>()
     private var undonePaths = LinkedHashMap<MyPath, PaintOptions>()
 
-    private var paint = Paint()
     private var path = MyPath()
     private var paintOptions = PaintOptions()
 
@@ -36,17 +37,6 @@ class DrawView @JvmOverloads constructor(
             paintOptions = paintOptions.copy(isEraserOn = value)
             invalidate()
         }
-
-    init {
-        paint.apply {
-            color = paintOptions.color
-            style = Paint.Style.STROKE
-            strokeJoin = Paint.Join.ROUND
-            strokeCap = Paint.Cap.ROUND
-            strokeWidth = paintOptions.strokeWidth
-            isAntiAlias = true
-        }
-    }
 
     fun undo() {
         if (paths.isEmpty() && lastPaths.isNotEmpty()) {
@@ -126,25 +116,13 @@ class DrawView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        for ((key, value) in paths) {
-            changePaint(value)
-            canvas.drawPath(key, paint)
+        for ((myPath, paintOptions) in paths) {
+            val paint = paintOptions.asPaint()
+            canvas.drawPath(myPath, paint)
         }
 
-        changePaint(paintOptions)
+        val paint = paintOptions.asPaint()
         canvas.drawPath(path, paint)
-    }
-
-    private fun changePaint(paintOptions: PaintOptions) {
-        if (paintOptions.isEraserOn) {
-            paint.color = Color.TRANSPARENT
-            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-        } else {
-            paint.color = paintOptions.color
-            paint.xfermode = null
-        }
-
-        paint.strokeWidth = paintOptions.strokeWidth
     }
 
     fun clearCanvas() {
