@@ -83,7 +83,7 @@ class DrawView @JvmOverloads constructor(
     fun setColor(newColor: Int) {
         @ColorInt
         val alphaColor = ColorUtils.setAlphaComponent(newColor, paintOptions.alpha)
-        paintOptions.color = alphaColor
+        paintOptions = paintOptions.copy(color = alphaColor)
 
         if (isStrokeWidthBarEnabled) {
             invalidate()
@@ -92,12 +92,12 @@ class DrawView @JvmOverloads constructor(
 
     fun setAlpha(newAlpha: Int) {
         val alpha = (newAlpha * 255) / 100
-        paintOptions.alpha = alpha
+        paintOptions = paintOptions.copy(alpha = alpha)
         setColor(paintOptions.color)
     }
 
-    fun setStrokeWidth(newStrokeWidth: Float) {
-        paintOptions.strokeWidth = newStrokeWidth
+    fun setStrokeWidth(strokeWidth: Float) {
+        paintOptions = paintOptions.copy(strokeWidth = strokeWidth)
 
         if (isStrokeWidthBarEnabled) {
             invalidate()
@@ -200,7 +200,7 @@ class DrawView @JvmOverloads constructor(
 
     fun toggleEraser() {
         isEraserOn = !isEraserOn
-        paintOptions.isEraserOn = isEraserOn
+        paintOptions = paintOptions.copy(isEraserOn = isEraserOn)
         invalidate()
     }
 }
