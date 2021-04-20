@@ -7,5 +7,6 @@
     <string name="redo">Redo</string>
     <string name="save">Save</string>
     <string name="stroke_width">Stroke Width</string>
+    <string name="text">Text</string>
     <string name="undo">Undo</string>
 </resources>

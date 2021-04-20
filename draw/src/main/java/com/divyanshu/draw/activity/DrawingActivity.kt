@@ -7,10 +7,14 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.*
 import com.divyanshu.draw.R
 import com.divyanshu.draw.result.contract.CreateDrawingActivityResultContract
 import com.divyanshu.draw.util.ImageUtils
@@ -20,6 +24,10 @@ import kotlinx.android.synthetic.main.color_palette_view.*
 import java.io.ByteArrayOutputStream
 
 class DrawingActivity : AppCompatActivity() {
+    companion object {
+        private const val TOP_MARGIN_FUDGE_FACTOR = -10
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,6 +52,7 @@ class DrawingActivity : AppCompatActivity() {
 
         setUpDrawCanvas()
         setUpDrawTools()
+        setUpAddTextContainer()
         colorSelector()
         setPaintAlpha()
         setPaintWidth()
@@ -79,6 +88,10 @@ class DrawingActivity : AppCompatActivity() {
 
             draw_view.canvasColor = canvasColor
         }
+    }
+
+    private fun setUpAddTextContainer() {
+        add_text_container.isInvisible = true
     }
 
     private fun setUpDrawTools() {
@@ -138,6 +151,59 @@ class DrawingActivity : AppCompatActivity() {
             seekBar_width.visibility = View.GONE
             seekBar_opacity.visibility = View.GONE
             draw_color_palette.visibility = View.VISIBLE
+        }
+
+        image_draw_text.setOnClickListener {
+            toggleDrawTools(draw_tools, false)
+
+            add_text_container.isVisible = true
+            val addText = layoutInflater.inflate(R.layout.add_text, add_text_container, false)
+            add_text_container.addView(addText)
+
+            addText.updateLayoutParams<RelativeLayout.LayoutParams> {
+                val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                addText.measure(widthMeasureSpec, heightMeasureSpec)
+
+                val addTextContainerWidth = add_text_container.width
+                val addTextWidth = addText.measuredWidth
+                val newMarginStart = (addTextContainerWidth - addTextWidth) / 2
+                marginStart = newMarginStart
+
+                val addTextContainerHeight = add_text_container.height
+                val addTextHeight = addText.measuredHeight
+                val newTopMargin = (addTextContainerHeight - addTextHeight) / 2
+                topMargin = newTopMargin
+            }
+
+            val saveImageButton = addText.findViewById<ImageButton>(R.id.save)
+
+            saveImageButton.setOnClickListener {
+                val editText = addText.findViewById<EditText>(R.id.edit_text)
+                val text = editText.text.toString()
+                val textSize = editText.textSize
+                val addTextMarginStart = addText.marginStart.toFloat()
+                val editTextPaddingStart = editText.paddingStart
+                val x = addTextMarginStart + editTextPaddingStart
+                val addTextMarginTop = addText.marginTop.toFloat()
+                val addTextHeight = addText.height
+                val editTextPaddingTop = editText.paddingTop
+                val y = addTextMarginTop + (addTextHeight / 2) + editTextPaddingTop + TOP_MARGIN_FUDGE_FACTOR
+                draw_view.addText(text, textSize, x, y)
+
+                with(add_text_container) {
+                    removeAllViews()
+                    isInvisible = true
+                }
+            }
+
+            val editText = addText.findViewById<EditText>(R.id.edit_text)
+            val color = ResourcesCompat.getColor(resources, R.color.color_black, null)
+
+            editText.apply {
+                setTextColor(color)
+                requestFocus()
+            }
         }
 
         image_draw_undo.setOnClickListener {

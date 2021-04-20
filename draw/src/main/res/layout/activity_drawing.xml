@@ -26,6 +26,15 @@
         app:layout_constraintStart_toStartOf="@id/background"
         app:layout_constraintTop_toTopOf="@id/background" />
 
+    <RelativeLayout
+        android:id="@+id/add_text_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/background"
+        app:layout_constraintEnd_toEndOf="@id/background"
+        app:layout_constraintStart_toStartOf="@id/background"
+        app:layout_constraintTop_toTopOf="@id/background" />
+
     <ImageView
         android:id="@+id/image_close_drawing"
         android:layout_width="48dp"
@@ -70,11 +79,11 @@
 
         <ImageView
             android:id="@+id/image_draw_eraser"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/eraser"
             android:foreground="?selectableItemBackground"
-            android:padding="16dp"
+            android:padding="12dp"
             android:src="@drawable/ic_eraser_black_24dp"
             android:tooltipText="@string/eraser"
             app:layout_constraintEnd_toStartOf="@id/image_draw_width"
@@ -86,11 +95,11 @@
 
         <ImageView
             android:id="@+id/image_draw_width"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/stroke_width"
             android:foreground="?selectableItemBackground"
-            android:padding="16dp"
+            android:padding="12dp"
             android:src="@drawable/ic_adjust_black_24dp"
             android:tooltipText="@string/stroke_width"
             app:layout_constraintEnd_toStartOf="@id/image_draw_color"
@@ -101,11 +110,11 @@
 
         <ImageView
             android:id="@+id/image_draw_color"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/color"
             android:foreground="?selectableItemBackground"
-            android:padding="16dp"
+            android:padding="12dp"
             android:src="@drawable/ic_color_lens_black_24dp"
             android:tooltipText="@string/color"
             app:layout_constraintEnd_toStartOf="@id/image_draw_opacity"
@@ -116,41 +125,56 @@
 
         <ImageView
             android:id="@+id/image_draw_opacity"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/opacity"
             android:foreground="?selectableItemBackground"
-            android:padding="16dp"
+            android:padding="12dp"
             android:src="@drawable/ic_opacity_black_24dp"
             android:tooltipText="@string/opacity"
-            app:layout_constraintEnd_toStartOf="@id/image_draw_undo"
+            app:layout_constraintEnd_toStartOf="@id/image_draw_text"
             app:layout_constraintStart_toEndOf="@id/image_draw_color"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/icon_color_selector"
             tools:targetApi="o" />
 
         <ImageView
-            android:id="@+id/image_draw_undo"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:contentDescription="@string/undo"
+            android:id="@+id/image_draw_text"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/opacity"
             android:foreground="?selectableItemBackground"
-            android:padding="16dp"
-            android:src="@drawable/ic_undo_black_24dp"
-            android:tooltipText="@string/undo"
-            app:layout_constraintEnd_toStartOf="@id/image_draw_redo"
+            android:padding="12dp"
+            android:src="@drawable/ic_baseline_text_fields_24"
+            android:tooltipText="@string/opacity"
+            app:layout_constraintEnd_toStartOf="@id/image_draw_undo"
             app:layout_constraintStart_toEndOf="@id/image_draw_opacity"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/icon_color_selector"
             tools:targetApi="o" />
 
         <ImageView
+            android:id="@+id/image_draw_undo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/undo"
+            android:foreground="?selectableItemBackground"
+            android:padding="12dp"
+            android:src="@drawable/ic_undo_black_24dp"
+            android:tooltipText="@string/undo"
+            app:layout_constraintEnd_toStartOf="@id/image_draw_redo"
+            app:layout_constraintStart_toEndOf="@id/image_draw_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/icon_color_selector"
+            tools:targetApi="o" />
+
+        <ImageView
             android:id="@+id/image_draw_redo"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/redo"
             android:foreground="?selectableItemBackground"
-            android:padding="16dp"
+            android:padding="12dp"
             android:src="@drawable/ic_redo_black_24dp"
             android:tooltipText="@string/redo"
             app:layout_constraintEnd_toEndOf="parent"

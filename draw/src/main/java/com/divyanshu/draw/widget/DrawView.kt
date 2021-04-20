@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -37,6 +38,17 @@ class DrawView @JvmOverloads constructor(
             paintOptions = paintOptions.copy(isEraserOn = value)
             invalidate()
         }
+
+    fun addText(text: String, textSize: Float, x: Float, y: Float) {
+        path.reset()
+
+        val textStartPoint = PointF(x, y)
+        paintOptions = paintOptions.copy(text = text, textSize = textSize, textStartPoint = textStartPoint)
+        paths[path] = paintOptions
+        path = MyPath()
+
+        invalidate()
+    }
 
     fun undo() {
         if (paths.isEmpty() && lastPaths.isNotEmpty()) {
@@ -118,11 +130,24 @@ class DrawView @JvmOverloads constructor(
 
         for ((myPath, paintOptions) in paths) {
             val paint = paintOptions.asPaint()
-            canvas.drawPath(myPath, paint)
+            val text = paintOptions.text
+
+            if (text == null) {
+                canvas.drawPath(myPath, paint)
+            } else {
+                val textStartPoint = paintOptions.textStartPoint!!
+                val x = textStartPoint.x
+                val y = textStartPoint.y
+                canvas.drawText(text, x, y, paint)
+            }
         }
 
         val paint = paintOptions.asPaint()
-        canvas.drawPath(path, paint)
+        val text = paintOptions.text
+
+        if (text == null) {
+            canvas.drawPath(path, paint)
+        }
     }
 
     fun clearCanvas() {
