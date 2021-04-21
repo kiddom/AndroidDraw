@@ -33,10 +33,14 @@ class DrawingActivity : AppCompatActivity() {
         private const val TOP_MARGIN_FUDGE_FACTOR = -10
     }
 
+    private var mostRecentlySelectedColorInt: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_drawing)
+
+        mostRecentlySelectedColorInt = ResourcesCompat.getColor(resources, R.color.color_black, null)
 
         setBackgroundIfNeeded()
 
@@ -268,10 +272,11 @@ class DrawingActivity : AppCompatActivity() {
             }
 
             val editText = addText.findViewById<EditText>(R.id.edit_text)
-            val color = ResourcesCompat.getColor(resources, R.color.color_black, null)
 
-            editText.apply {
-                setTextColor(color)
+            with(editText) {
+                val mostRecentlySelectedColorInt = mostRecentlySelectedColorInt!!
+                setTextColor(mostRecentlySelectedColorInt)
+
                 requestFocus()
             }
         }
@@ -368,6 +373,7 @@ class DrawingActivity : AppCompatActivity() {
 
     private fun selectColor(@ColorRes colorResId: Int, colorImageView: View) {
         val colorInt = ResourcesCompat.getColor(resources, colorResId, null)
+        mostRecentlySelectedColorInt = colorInt
         draw_view.setColor(colorInt)
         circle_view_opacity.setColor(colorInt)
         circle_view_width.setColor(colorInt)
