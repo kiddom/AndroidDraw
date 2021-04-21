@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/text"
         android:importantForAutofill="no"
-        android:inputType="textAutoComplete|textAutoCorrect|textCapSentences|textMultiLine"
+        android:inputType="textAutoComplete|textAutoCorrect|textCapSentences"
         android:textColorHint="@color/color_grey" />
 
     <ImageButton
