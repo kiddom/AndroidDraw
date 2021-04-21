@@ -38,13 +38,13 @@
 
     <ImageView
         android:id="@+id/image_close_drawing"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
-        android:background="@color/color_white"
+        android:background="@drawable/circle_white"
         android:contentDescription="@string/close"
         android:foreground="?selectableItemBackgroundBorderless"
-        android:padding="12dp"
+        android:padding="8dp"
         android:src="@drawable/ic_close_black_24dp"
         android:tooltipText="@string/close"
         app:layout_constraintStart_toStartOf="parent"
