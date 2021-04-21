@@ -1,11 +1,15 @@
 package com.divyanshu.draw.activity
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.view.DragEvent
+import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
@@ -176,15 +180,80 @@ class DrawingActivity : AppCompatActivity() {
                 topMargin = newTopMargin
             }
 
+            val moveView = addText.findViewById<View>(R.id.move)
+            var touchX = 0
+            var touchY = 0
+            val onTouchListener: (View, MotionEvent) -> Boolean = { v, event ->
+                touchX = event.x.toInt()
+                touchY = event.y.toInt()
+
+                v.performClick()
+
+                moveView.setOnTouchListener(null)
+
+                false
+            }
+            moveView.setOnTouchListener(onTouchListener)
+
+            add_text_container.setOnDragListener { _, dragEvent ->
+                val action = dragEvent.action
+
+                when (action) {
+                    DragEvent.ACTION_DROP -> {
+                        val newX = dragEvent.x.toInt()
+                        val newMarginStart = newX - touchX
+                        val newY = dragEvent.y.toInt()
+                        val newTopMargin = newY - touchY
+
+                        addText.updateLayoutParams<RelativeLayout.LayoutParams> {
+                            marginStart = newMarginStart
+                            topMargin = newTopMargin
+                        }
+
+                        true
+                    }
+                    DragEvent.ACTION_DRAG_ENDED -> {
+                        addText.isVisible = true
+                        moveView.setOnTouchListener(onTouchListener)
+
+                        true
+                    }
+                    DragEvent.ACTION_DRAG_ENTERED -> true
+                    DragEvent.ACTION_DRAG_EXITED -> true
+                    DragEvent.ACTION_DRAG_LOCATION -> true
+                    DragEvent.ACTION_DRAG_STARTED -> true
+                    else -> false
+                }
+            }
+
+            val onClickListener: (View) -> Unit = {
+                addText.isInvisible = true
+
+                val clipData = ClipData.newPlainText("", "")
+                val dragShadowBuilder = object : View.DragShadowBuilder(addText) {
+                    override fun onProvideShadowMetrics(
+                            outShadowSize: Point, outShadowTouchPoint: Point
+                    ) {
+                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint)
+
+                        outShadowTouchPoint.set(touchX, touchY)
+                    }
+                }
+                val flags = 0
+                ViewCompat.startDragAndDrop(addText, clipData, dragShadowBuilder, null, flags)
+            }
+            moveView.setOnClickListener(onClickListener)
+
             val saveImageButton = addText.findViewById<ImageButton>(R.id.save)
 
             saveImageButton.setOnClickListener {
+                val moveViewWidth = moveView.measuredWidth
                 val editText = addText.findViewById<EditText>(R.id.edit_text)
                 val text = editText.text.toString()
                 val textSize = editText.textSize
                 val addTextMarginStart = addText.marginStart.toFloat()
                 val editTextPaddingStart = editText.paddingStart
-                val x = addTextMarginStart + editTextPaddingStart
+                val x = moveViewWidth + addTextMarginStart + editTextPaddingStart
                 val addTextMarginTop = addText.marginTop.toFloat()
                 val addTextHeight = addText.height
                 val editTextPaddingTop = editText.paddingTop

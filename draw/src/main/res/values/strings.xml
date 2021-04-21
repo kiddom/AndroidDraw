@@ -2,6 +2,7 @@
     <string name="app_name">Draw</string>
     <string name="close">Close</string>
     <string name="color">Color</string>
+    <string name="drag">Drag</string>
     <string name="eraser">Eraser</string>
     <string name="opacity">Opacity</string>
     <string name="redo">Redo</string>

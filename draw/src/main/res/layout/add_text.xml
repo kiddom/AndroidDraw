@@ -5,6 +5,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <ImageButton
+        android:id="@+id/move"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/drag"
+        android:src="@drawable/ic_outline_drag_indicator" />
+
     <EditText
         android:id="@+id/edit_text"
         android:layout_width="wrap_content"
