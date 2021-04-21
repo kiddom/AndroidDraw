@@ -5,6 +5,7 @@
     <color name="icon_pressed_color">#757575</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_grey">#637070</color>
+    <color name="color_light_grey">#F4F6F6</color>
     <color name="color_black">#000</color>
     <color name="color_red">#FF5252</color>
     <color name="color_yellow">#FFEB3B</color>
