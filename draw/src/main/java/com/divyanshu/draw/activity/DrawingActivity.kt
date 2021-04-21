@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.SeekBar
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
@@ -309,59 +310,31 @@ class DrawingActivity : AppCompatActivity() {
 
     private fun colorSelector() {
         image_color_black.setOnClickListener {
-            val color = ResourcesCompat.getColor(resources, R.color.color_black, null)
-            draw_view.setColor(color)
-            circle_view_opacity.setColor(color)
-            circle_view_width.setColor(color)
-            scaleColorView(image_color_black)
+            selectColor(R.color.color_black, image_color_black)
         }
 
         image_color_red.setOnClickListener {
-            val color = ResourcesCompat.getColor(resources, R.color.color_red, null)
-            draw_view.setColor(color)
-            circle_view_opacity.setColor(color)
-            circle_view_width.setColor(color)
-            scaleColorView(image_color_red)
+            selectColor(R.color.color_red, image_color_red)
         }
 
         image_color_yellow.setOnClickListener {
-            val color = ResourcesCompat.getColor(resources, R.color.color_yellow, null)
-            draw_view.setColor(color)
-            circle_view_opacity.setColor(color)
-            circle_view_width.setColor(color)
-            scaleColorView(image_color_yellow)
+            selectColor(R.color.color_yellow, image_color_yellow)
         }
 
         image_color_green.setOnClickListener {
-            val color = ResourcesCompat.getColor(resources, R.color.color_green, null)
-            draw_view.setColor(color)
-            circle_view_opacity.setColor(color)
-            circle_view_width.setColor(color)
-            scaleColorView(image_color_green)
+            selectColor(R.color.color_green, image_color_green)
         }
 
         image_color_blue.setOnClickListener {
-            val color = ResourcesCompat.getColor(resources, R.color.color_blue, null)
-            draw_view.setColor(color)
-            circle_view_opacity.setColor(color)
-            circle_view_width.setColor(color)
-            scaleColorView(image_color_blue)
+            selectColor(R.color.color_blue, image_color_blue)
         }
 
         image_color_pink.setOnClickListener {
-            val color = ResourcesCompat.getColor(resources, R.color.color_pink, null)
-            draw_view.setColor(color)
-            circle_view_opacity.setColor(color)
-            circle_view_width.setColor(color)
-            scaleColorView(image_color_pink)
+            selectColor(R.color.color_pink, image_color_pink)
         }
 
         image_color_brown.setOnClickListener {
-            val color = ResourcesCompat.getColor(resources, R.color.color_brown, null)
-            draw_view.setColor(color)
-            circle_view_opacity.setColor(color)
-            circle_view_width.setColor(color)
-            scaleColorView(image_color_brown)
+            selectColor(R.color.color_brown, image_color_brown)
         }
     }
 
@@ -391,6 +364,14 @@ class DrawingActivity : AppCompatActivity() {
         //set scale of selected view
         view.scaleX = 1.5f
         view.scaleY = 1.5f
+    }
+
+    private fun selectColor(@ColorRes colorResId: Int, colorImageView: View) {
+        val colorInt = ResourcesCompat.getColor(resources, colorResId, null)
+        draw_view.setColor(colorInt)
+        circle_view_opacity.setColor(colorInt)
+        circle_view_width.setColor(colorInt)
+        scaleColorView(colorImageView)
     }
 
     private fun setPaintWidth() {
