@@ -374,6 +374,10 @@ class DrawingActivity : AppCompatActivity() {
     private fun selectColor(@ColorRes colorResId: Int, colorImageView: View) {
         val colorInt = ResourcesCompat.getColor(resources, colorResId, null)
         mostRecentlySelectedColorInt = colorInt
+
+        val editText = findViewById<EditText>(R.id.edit_text)
+        editText?.setTextColor(colorInt)
+
         draw_view.setColor(colorInt)
         circle_view_opacity.setColor(colorInt)
         circle_view_width.setColor(colorInt)
