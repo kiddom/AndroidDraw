@@ -1,13 +1,20 @@
 <resources>
     <string name="app_name">Draw</string>
+    <string name="black">Black</string>
+    <string name="blue">Blue</string>
+    <string name="brown">Brown</string>
     <string name="close">Close</string>
     <string name="color">Color</string>
     <string name="drag">Drag</string>
     <string name="eraser">Eraser</string>
+    <string name="green">Green</string>
     <string name="opacity">Opacity</string>
+    <string name="pink">Pink</string>
+    <string name="red">Red</string>
     <string name="redo">Redo</string>
     <string name="save">Save</string>
     <string name="stroke_width">Stroke Width</string>
     <string name="text">Text</string>
     <string name="undo">Undo</string>
+    <string name="yellow">Yellow</string>
 </resources>
