@@ -407,6 +407,14 @@ class DrawingActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val alpha = progress * 255 / 100
                 mostRecentlySelectedAlpha = alpha
+
+                val editText = findViewById<EditText>(R.id.edit_text)
+
+                if (editText != null) {
+                    val alphaFloat = progress / 100f
+                    editText.alpha = alphaFloat
+                }
+
                 draw_view.setAlpha(alpha)
                 circle_view_opacity.setAlpha(alpha)
             }
