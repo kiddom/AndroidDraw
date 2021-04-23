@@ -354,7 +354,7 @@ class DrawingActivity : AppCompatActivity() {
 
     private fun scaleColorView(view: View) {
         setOf(image_color_black, image_color_blue, image_color_brown, image_color_green,
-                image_color_pink, image_color_red, image_color_yellow).forEach {
+                image_color_pink, image_color_red, image_color_white, image_color_yellow).forEach {
             it.scaleX = 1f
             it.scaleY = 1f
         }
