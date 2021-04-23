@@ -16,6 +16,7 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import androidx.annotation.ColorRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
@@ -37,6 +38,17 @@ class DrawingActivity : AppCompatActivity() {
 
     private var mostRecentlySelectedColorInt: Int? = null
 
+    override fun onBackPressed() {
+        AlertDialog.Builder(this).run {
+            setMessage(R.string.leave_without_saving)
+            setNegativeButton(android.R.string.cancel, null)
+            setPositiveButton(R.string.leave) { _, _ ->
+                super.onBackPressed()
+            }
+            show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,7 +59,7 @@ class DrawingActivity : AppCompatActivity() {
         setBackgroundIfNeeded()
 
         image_close_drawing.setOnClickListener {
-            finish()
+            onBackPressed()
         }
 
         fab_send_drawing.setOnClickListener {

@@ -8,6 +8,8 @@
     <string name="drag">Drag</string>
     <string name="eraser">Eraser</string>
     <string name="green">Green</string>
+    <string name="leave">Leave</string>
+    <string name="leave_without_saving">Leave without saving?</string>
     <string name="opacity">Opacity</string>
     <string name="pink">Pink</string>
     <string name="red">Red</string>
