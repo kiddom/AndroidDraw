@@ -353,27 +353,11 @@ class DrawingActivity : AppCompatActivity() {
     }
 
     private fun scaleColorView(view: View) {
-        //reset scale of all views
-        image_color_black.scaleX = 1f
-        image_color_black.scaleY = 1f
-
-        image_color_red.scaleX = 1f
-        image_color_red.scaleY = 1f
-
-        image_color_yellow.scaleX = 1f
-        image_color_yellow.scaleY = 1f
-
-        image_color_green.scaleX = 1f
-        image_color_green.scaleY = 1f
-
-        image_color_blue.scaleX = 1f
-        image_color_blue.scaleY = 1f
-
-        image_color_pink.scaleX = 1f
-        image_color_pink.scaleY = 1f
-
-        image_color_brown.scaleX = 1f
-        image_color_brown.scaleY = 1f
+        setOf(image_color_black, image_color_blue, image_color_brown, image_color_green,
+                image_color_pink, image_color_red, image_color_yellow).forEach {
+            it.scaleX = 1f
+            it.scaleY = 1f
+        }
 
         //set scale of selected view
         view.scaleX = 1.5f
