@@ -320,35 +320,35 @@ class DrawingActivity : AppCompatActivity() {
 
     private fun colorSelector() {
         image_color_black.setOnClickListener {
-            selectColor(R.color.color_black, image_color_black)
+            selectColor(R.color.color_black, it)
         }
 
         image_color_red.setOnClickListener {
-            selectColor(R.color.color_red, image_color_red)
+            selectColor(R.color.color_red, it)
         }
 
         image_color_yellow.setOnClickListener {
-            selectColor(R.color.color_yellow, image_color_yellow)
+            selectColor(R.color.color_yellow, it)
         }
 
         image_color_green.setOnClickListener {
-            selectColor(R.color.color_green, image_color_green)
+            selectColor(R.color.color_green, it)
         }
 
         image_color_blue.setOnClickListener {
-            selectColor(R.color.color_blue, image_color_blue)
+            selectColor(R.color.color_blue, it)
         }
 
         image_color_pink.setOnClickListener {
-            selectColor(R.color.color_pink, image_color_pink)
+            selectColor(R.color.color_pink, it)
         }
 
         image_color_brown.setOnClickListener {
-            selectColor(R.color.color_brown, image_color_brown)
+            selectColor(R.color.color_brown, it)
         }
 
         image_color_white.setOnClickListener {
-            selectColor(R.color.color_white, image_color_white)
+            selectColor(R.color.color_white, it)
         }
     }
 
