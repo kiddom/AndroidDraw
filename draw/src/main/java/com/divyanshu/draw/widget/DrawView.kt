@@ -96,8 +96,7 @@ class DrawView @JvmOverloads constructor(
         }
     }
 
-    fun setAlpha(newAlpha: Int) {
-        val alpha = (newAlpha * 255) / 100
+    fun setAlpha(alpha: Int) {
         paintOptions = paintOptions.copy(alpha = alpha)
         setColor(paintOptions.color)
     }

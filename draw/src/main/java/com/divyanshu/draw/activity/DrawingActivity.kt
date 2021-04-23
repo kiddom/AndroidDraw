@@ -33,6 +33,8 @@ class DrawingActivity : AppCompatActivity() {
         private const val TOP_MARGIN_FUDGE_FACTOR = -10
     }
 
+    private var mostRecentlySelectedAlpha: Int = 255
+
     private var mostRecentlySelectedColorInt: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -274,6 +276,9 @@ class DrawingActivity : AppCompatActivity() {
             val editText = addText.findViewById<EditText>(R.id.edit_text)
 
             with(editText) {
+                val alphaFloat = mostRecentlySelectedAlpha / 255f
+                alpha = alphaFloat
+
                 val mostRecentlySelectedColorInt = mostRecentlySelectedColorInt!!
                 setTextColor(mostRecentlySelectedColorInt)
 
@@ -400,8 +405,10 @@ class DrawingActivity : AppCompatActivity() {
     private fun setPaintAlpha() {
         seekBar_opacity.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                draw_view.setAlpha(progress)
-                circle_view_opacity.setAlpha(progress)
+                val alpha = progress * 255 / 100
+                mostRecentlySelectedAlpha = alpha
+                draw_view.setAlpha(alpha)
+                circle_view_opacity.setAlpha(alpha)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}

@@ -34,8 +34,7 @@ class CircleView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         invalidate()
     }
 
-    fun setAlpha(newAlpha: Int) {
-        val alpha = (newAlpha * 255) / 100
+    fun setAlpha(alpha: Int) {
         mPaint.alpha = alpha
         invalidate()
     }
