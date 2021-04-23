@@ -16,5 +16,6 @@
     <string name="stroke_width">Stroke Width</string>
     <string name="text">Text</string>
     <string name="undo">Undo</string>
+    <string name="white">White</string>
     <string name="yellow">Yellow</string>
 </resources>

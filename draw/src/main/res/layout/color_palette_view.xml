@@ -6,12 +6,12 @@
 
     <ImageView
         android:id="@+id/image_color_black"
-        android:layout_width="48dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/black"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
-        android:paddingEnd="12dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:scaleX="1.5"
         android:scaleY="1.5"
@@ -19,67 +19,78 @@
 
     <ImageView
         android:id="@+id/image_color_red"
-        android:layout_width="48dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/red"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
-        android:paddingEnd="12dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:src="@drawable/circle_red" />
 
     <ImageView
         android:id="@+id/image_color_yellow"
-        android:layout_width="48dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/yellow"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
-        android:paddingEnd="12dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:src="@drawable/circle_yellow" />
 
     <ImageView
         android:id="@+id/image_color_green"
-        android:layout_width="48dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/green"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
-        android:paddingEnd="12dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:src="@drawable/circle_green" />
 
     <ImageView
         android:id="@+id/image_color_blue"
-        android:layout_width="48dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/blue"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
-        android:paddingEnd="12dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:src="@drawable/circle_blue" />
 
     <ImageView
         android:id="@+id/image_color_pink"
-        android:layout_width="48dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/pink"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
-        android:paddingEnd="12dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:src="@drawable/circle_pink" />
 
     <ImageView
         android:id="@+id/image_color_brown"
-        android:layout_width="48dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/brown"
-        android:paddingStart="12dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
-        android:paddingEnd="12dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="16dp"
         android:src="@drawable/circle_brown" />
+
+    <ImageView
+        android:id="@+id/image_color_white"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/white"
+        android:paddingStart="8dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="16dp"
+        android:src="@drawable/circle_white" />
 </LinearLayout>

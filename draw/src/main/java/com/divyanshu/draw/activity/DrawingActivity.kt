@@ -346,6 +346,10 @@ class DrawingActivity : AppCompatActivity() {
         image_color_brown.setOnClickListener {
             selectColor(R.color.color_brown, image_color_brown)
         }
+
+        image_color_white.setOnClickListener {
+            selectColor(R.color.color_white, image_color_white)
+        }
     }
 
     private fun scaleColorView(view: View) {
