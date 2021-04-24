@@ -39,6 +39,10 @@ class DrawView @JvmOverloads constructor(
             invalidate()
         }
 
+    init {
+        setLayerType(LAYER_TYPE_HARDWARE, null)
+    }
+
     fun addText(text: String, textSize: Float, x: Float, y: Float) {
         path.reset()
 
