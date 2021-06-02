@@ -2,6 +2,7 @@ package com.divyanshu.draw.activity
 
 import android.app.Activity
 import android.content.ClipData
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RelativeLayout
@@ -294,6 +296,13 @@ class DrawingActivity : AppCompatActivity() {
                 val mostRecentlySelectedColorInt = mostRecentlySelectedColorInt!!
                 setTextColor(mostRecentlySelectedColorInt)
 
+                requestFocus()
+            }
+
+            with(editText) {
+                val inputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
                 requestFocus()
             }
         }
