@@ -287,6 +287,8 @@ class DrawingActivity : AppCompatActivity() {
                     removeAllViews()
                     isInvisible = true
                 }
+
+                image_draw_text.isEnabled = true
             }
 
             val editText = addText.findViewById<EditText>(R.id.edit_text)
