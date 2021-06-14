@@ -179,6 +179,8 @@ class DrawingActivity : AppCompatActivity() {
         }
 
         image_draw_text.setOnClickListener {
+            it.isEnabled = false
+
             toggleDrawTools(draw_tools, false)
 
             add_text_container.isVisible = true
