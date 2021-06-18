@@ -450,7 +450,7 @@ class DrawingActivity : AppCompatActivity() {
         val toolViews = setOf(image_draw_color, image_draw_eraser, image_draw_opacity, image_draw_width)
 
         toolViews.forEach {
-            it.isSelected = it == selectedView
+            it.isSelected = (it == selectedView && !it.isSelected)
         }
     }
 
