@@ -123,6 +123,8 @@ class DrawingActivity : AppCompatActivity() {
         circle_view_opacity.setCircleRadius(100f)
 
         image_draw_eraser.setOnClickListener {
+            updateSelectedState(it)
+
             val newIsEraserOn = !draw_view.isEraserOn
             draw_view.isEraserOn = newIsEraserOn
             image_draw_eraser.isSelected = newIsEraserOn
@@ -137,6 +139,8 @@ class DrawingActivity : AppCompatActivity() {
         }
 
         image_draw_width.setOnClickListener {
+            updateSelectedState(it)
+
             if (draw_tools.translationY == (56).toPx) {
                 toggleDrawTools(draw_tools, true)
             } else if (draw_tools.translationY == (0).toPx && seekBar_width.visibility == View.VISIBLE) {
@@ -151,6 +155,8 @@ class DrawingActivity : AppCompatActivity() {
         }
 
         image_draw_opacity.setOnClickListener {
+            updateSelectedState(it)
+
             if (draw_tools.translationY == (56).toPx) {
                 toggleDrawTools(draw_tools, true)
             } else if (draw_tools.translationY == (0).toPx && seekBar_opacity.visibility == View.VISIBLE) {
@@ -165,6 +171,8 @@ class DrawingActivity : AppCompatActivity() {
         }
 
         image_draw_color.setOnClickListener {
+            updateSelectedState(it)
+
             if (draw_tools.translationY == (56).toPx) {
                 toggleDrawTools(draw_tools, true)
             } else if (draw_tools.translationY == (0).toPx && draw_color_palette.visibility == View.VISIBLE) {
@@ -436,6 +444,14 @@ class DrawingActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+    }
+
+    private fun updateSelectedState(selectedView: View) {
+        val toolViews = setOf(image_draw_color, image_draw_eraser, image_draw_opacity, image_draw_width)
+
+        toolViews.forEach {
+            it.isSelected = it == selectedView
+        }
     }
 
     private val Int.toPx: Float
