@@ -120,6 +120,8 @@ class DrawingActivity : AppCompatActivity() {
     }
 
     private fun setUpDrawTools() {
+        erase_all.isGone = true
+
         circle_view_opacity.setCircleRadius(100f)
 
         image_draw_eraser.setOnClickListener {

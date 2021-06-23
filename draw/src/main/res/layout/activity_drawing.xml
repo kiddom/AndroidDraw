@@ -181,6 +181,7 @@
             tools:targetApi="o" />
 
         <Button
+            android:id="@+id/erase_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/erase_all"
