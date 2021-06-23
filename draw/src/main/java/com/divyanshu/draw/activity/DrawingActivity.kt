@@ -162,8 +162,6 @@ class DrawingActivity : AppCompatActivity() {
         image_draw_text.setOnClickListener {
             it.isEnabled = false
 
-            toggleDrawTools(false)
-
             add_text_container.isVisible = true
             val addText = layoutInflater.inflate(R.layout.add_text, add_text_container, false)
             add_text_container.addView(addText)
@@ -294,14 +292,10 @@ class DrawingActivity : AppCompatActivity() {
 
         image_draw_undo.setOnClickListener {
             draw_view.undo()
-            toggleDrawTools(false)
-            toggleAuxiliaryViews()
         }
 
         image_draw_redo.setOnClickListener {
             draw_view.redo()
-            toggleDrawTools(false)
-            toggleAuxiliaryViews()
         }
     }
 
