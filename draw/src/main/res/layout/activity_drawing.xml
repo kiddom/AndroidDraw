@@ -180,6 +180,14 @@
             app:tint="@color/icon_color_selector"
             tools:targetApi="o" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/erase_all"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_draw_eraser" />
+
         <SeekBar
             android:id="@+id/seekBar_width"
             android:layout_width="0dp"
