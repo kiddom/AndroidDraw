@@ -151,12 +151,14 @@ class DrawingActivity : AppCompatActivity() {
             updateSelectedState(it)
             toggleDrawTools(it.isSelected)
             toggleAuxiliaryViews(circle_view_opacity, seekBar_opacity)
+            draw_view.isEraserOn = false
         }
 
         image_draw_color.setOnClickListener {
             updateSelectedState(it)
             toggleDrawTools(it.isSelected)
             toggleAuxiliaryViews(draw_color_palette)
+            draw_view.isEraserOn = false
         }
 
         image_draw_text.setOnClickListener {
@@ -268,6 +270,7 @@ class DrawingActivity : AppCompatActivity() {
                 }
 
                 image_draw_text.isEnabled = true
+                draw_view.isEraserOn = false
             }
 
             val editText = addText.findViewById<EditText>(R.id.edit_text)
