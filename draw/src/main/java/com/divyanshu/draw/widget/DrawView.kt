@@ -154,10 +154,14 @@ class DrawView @JvmOverloads constructor(
     }
 
     fun clearCanvas() {
-        lastPaths = paths.clone() as LinkedHashMap<MyPath, PaintOptions>
-        path.reset()
-        paths.clear()
-        invalidate()
+        val canvasIsClear = paths.isEmpty()
+
+        if (!canvasIsClear) {
+            lastPaths = paths.clone() as LinkedHashMap<MyPath, PaintOptions>
+            path.reset()
+            paths.clear()
+            invalidate()
+        }
     }
 
     private fun actionDown(x: Float, y: Float) {
