@@ -141,13 +141,6 @@ class DrawingActivity : AppCompatActivity() {
             draw_view.isEraserOn = selected
         }
 
-        image_draw_eraser.setOnLongClickListener {
-            draw_view.clearCanvas()
-            toggleDrawTools(false)
-
-            true
-        }
-
         image_draw_width.setOnClickListener {
             updateSelectedState(it)
             toggleDrawTools(it.isSelected)
