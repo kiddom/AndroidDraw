@@ -127,71 +127,43 @@ class DrawingActivity : AppCompatActivity() {
         image_draw_eraser.setOnClickListener {
             updateSelectedState(it)
 
-            val newIsEraserOn = !draw_view.isEraserOn
-            draw_view.isEraserOn = newIsEraserOn
-            image_draw_eraser.isSelected = newIsEraserOn
-            toggleDrawTools(draw_tools, false)
+            val selected = it.isSelected
+            toggleDrawTools(selected)
+
+            toggleAuxiliaryViews(erase_all)
+
+            draw_view.isEraserOn = selected
         }
 
         image_draw_eraser.setOnLongClickListener {
             draw_view.clearCanvas()
-            toggleDrawTools(draw_tools, false)
+            toggleDrawTools(false)
 
             true
         }
 
         image_draw_width.setOnClickListener {
             updateSelectedState(it)
-
-            if (draw_tools.translationY == (56).toPx) {
-                toggleDrawTools(draw_tools, true)
-            } else if (draw_tools.translationY == (0).toPx && seekBar_width.visibility == View.VISIBLE) {
-                toggleDrawTools(draw_tools, false)
-            }
-
-            circle_view_width.visibility = View.VISIBLE
-            circle_view_opacity.visibility = View.GONE
-            seekBar_width.visibility = View.VISIBLE
-            seekBar_opacity.visibility = View.GONE
-            draw_color_palette.visibility = View.GONE
+            toggleDrawTools(it.isSelected)
+            toggleAuxiliaryViews(circle_view_width, seekBar_width)
         }
 
         image_draw_opacity.setOnClickListener {
             updateSelectedState(it)
-
-            if (draw_tools.translationY == (56).toPx) {
-                toggleDrawTools(draw_tools, true)
-            } else if (draw_tools.translationY == (0).toPx && seekBar_opacity.visibility == View.VISIBLE) {
-                toggleDrawTools(draw_tools, false)
-            }
-
-            circle_view_width.visibility = View.GONE
-            circle_view_opacity.visibility = View.VISIBLE
-            seekBar_width.visibility = View.GONE
-            seekBar_opacity.visibility = View.VISIBLE
-            draw_color_palette.visibility = View.GONE
+            toggleDrawTools(it.isSelected)
+            toggleAuxiliaryViews(circle_view_opacity, seekBar_opacity)
         }
 
         image_draw_color.setOnClickListener {
             updateSelectedState(it)
-
-            if (draw_tools.translationY == (56).toPx) {
-                toggleDrawTools(draw_tools, true)
-            } else if (draw_tools.translationY == (0).toPx && draw_color_palette.visibility == View.VISIBLE) {
-                toggleDrawTools(draw_tools, false)
-            }
-
-            circle_view_width.visibility = View.GONE
-            circle_view_opacity.visibility = View.GONE
-            seekBar_width.visibility = View.GONE
-            seekBar_opacity.visibility = View.GONE
-            draw_color_palette.visibility = View.VISIBLE
+            toggleDrawTools(it.isSelected)
+            toggleAuxiliaryViews(draw_color_palette)
         }
 
         image_draw_text.setOnClickListener {
             it.isEnabled = false
 
-            toggleDrawTools(draw_tools, false)
+            toggleDrawTools(false)
 
             add_text_container.isVisible = true
             val addText = layoutInflater.inflate(R.layout.add_text, add_text_container, false)
@@ -323,12 +295,14 @@ class DrawingActivity : AppCompatActivity() {
 
         image_draw_undo.setOnClickListener {
             draw_view.undo()
-            toggleDrawTools(draw_tools, false)
+            toggleDrawTools(false)
+            toggleAuxiliaryViews()
         }
 
         image_draw_redo.setOnClickListener {
             draw_view.redo()
-            toggleDrawTools(draw_tools, false)
+            toggleDrawTools(false)
+            toggleAuxiliaryViews()
         }
     }
 
@@ -342,14 +316,6 @@ class DrawingActivity : AppCompatActivity() {
             TooltipUtils.setTooltipText(image_draw_opacity, R.string.opacity)
             TooltipUtils.setTooltipText(image_draw_undo, R.string.undo)
             TooltipUtils.setTooltipText(image_draw_redo, R.string.redo)
-        }
-    }
-
-    private fun toggleDrawTools(view: View, showView: Boolean = true) {
-        if (showView) {
-            view.animate().translationY((0).toPx)
-        } else {
-            view.animate().translationY((56).toPx)
         }
     }
 
@@ -446,6 +412,22 @@ class DrawingActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+    }
+
+    private fun toggleAuxiliaryViews(vararg viewsToShow: View) {
+        setOf(circle_view_opacity, circle_view_width, draw_color_palette, erase_all, seekBar_opacity, seekBar_width).forEach {
+            it.isInvisible = !viewsToShow.contains(it)
+        }
+    }
+
+    private fun toggleDrawTools(showView: Boolean) {
+        val translationY = if (showView) {
+            0
+        } else {
+            56
+        }
+
+        draw_tools.animate().translationY(translationY.toPx)
     }
 
     private fun updateSelectedState(selectedView: View) {
