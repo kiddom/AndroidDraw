@@ -27,6 +27,14 @@
         app:layout_constraintStart_toStartOf="@id/background"
         app:layout_constraintTop_toTopOf="@id/background" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/draw_view"
+        app:layout_constraintEnd_toEndOf="@id/draw_view"
+        app:layout_constraintStart_toStartOf="@id/draw_view"
+        app:layout_constraintTop_toTopOf="@id/draw_view" />
+
     <RelativeLayout
         android:id="@+id/add_text_container"
         android:layout_width="0dp"
