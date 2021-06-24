@@ -12,6 +12,7 @@
     <string name="leave">Leave</string>
     <string name="leave_without_saving">Leave without saving?</string>
     <string name="opacity">Opacity</string>
+    <string name="pan_and_scale">Pan/zoom</string>
     <string name="pink">Pink</string>
     <string name="red">Red</string>
     <string name="redo">Redo</string>
