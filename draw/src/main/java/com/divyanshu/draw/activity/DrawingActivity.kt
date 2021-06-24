@@ -125,7 +125,7 @@ class DrawingActivity : AppCompatActivity() {
         image_draw_pan_and_scale.setOnClickListener {
             updateSelectedState(it)
 
-            pan_and_scale_listener.isVisible = true
+            pan_and_scale_listener.isVisible = it.isSelected
         }
 
         with(erase_all) {
