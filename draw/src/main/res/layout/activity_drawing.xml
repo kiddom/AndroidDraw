@@ -28,6 +28,7 @@
         app:layout_constraintTop_toTopOf="@id/background" />
 
     <View
+        android:id="@+id/pan_and_scale_listener"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/draw_view"

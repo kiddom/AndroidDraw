@@ -75,6 +75,8 @@ class DrawingActivity : AppCompatActivity() {
             finish()
         }
 
+        pan_and_scale_listener.isGone = true
+
         setUpDrawCanvas()
         setUpDrawTools()
         setUpAddTextContainer()
