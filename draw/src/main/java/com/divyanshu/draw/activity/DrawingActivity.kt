@@ -122,6 +122,12 @@ class DrawingActivity : AppCompatActivity() {
     }
 
     private fun setUpDrawTools() {
+        image_draw_pan_and_scale.setOnClickListener {
+            updateSelectedState(it)
+
+            pan_and_scale_listener.isVisible = true
+        }
+
         with(erase_all) {
             isGone = true
 
@@ -429,7 +435,8 @@ class DrawingActivity : AppCompatActivity() {
     }
 
     private fun updateSelectedState(selectedView: View) {
-        val toolViews = setOf(image_draw_color, image_draw_eraser, image_draw_opacity, image_draw_width)
+        val toolViews = setOf(image_draw_color, image_draw_eraser, image_draw_opacity,
+                image_draw_pan_and_scale, image_draw_width)
 
         toolViews.forEach {
             it.isSelected = (it == selectedView && !it.isSelected)
