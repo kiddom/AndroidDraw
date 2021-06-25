@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.activity_drawing.*
 import kotlinx.android.synthetic.main.color_palette_view.*
 import java.io.ByteArrayOutputStream
 
+
 class DrawingActivity : AppCompatActivity() {
     companion object {
         private const val TOP_MARGIN_FUDGE_FACTOR = -10
@@ -47,6 +48,21 @@ class DrawingActivity : AppCompatActivity() {
     private var mostRecentlySelectedColorInt: Int? = null
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
+
+    //These two variables keep track of the X and Y coordinate of the finger when it first
+    //touches the screen
+    private var startX = 0f
+    private var startY = 0f
+
+    //These two variables keep track of the amount we need to translate the canvas along the X
+    //and the Y coordinate
+    private var translateX = 0f
+    private var translateY = 0f
+
+    //These two variables keep track of the amount we translated the X and Y coordinates, the last time we
+    //panned.
+    private var previousTranslateX = 0f
+    private var previousTranslateY = 0f
 
     override fun onBackPressed() {
         AlertDialog.Builder(this).run {
@@ -326,6 +342,31 @@ class DrawingActivity : AppCompatActivity() {
             isGone = true
 
             setOnTouchListener { v, event ->
+                val pointerCount = event.pointerCount
+
+                if (pointerCount == 1) {
+                    val action = event.action
+                    val maskedAction = action and MotionEvent.ACTION_MASK
+
+                    when (maskedAction) {
+                        MotionEvent.ACTION_DOWN -> {
+                            startX = event.x - previousTranslateX
+                            startY = event.y - previousTranslateY
+                        }
+                        MotionEvent.ACTION_MOVE -> {
+                            translateX = event.x - startX
+                            draw_view.translationX = translateX
+
+                            translateY = event.y - startY
+                            draw_view.translationY = translateY
+                        }
+                        MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
+                            previousTranslateX = translateX
+                            previousTranslateY = translateY
+                        }
+                    }
+                }
+
                 scaleGestureDetector.onTouchEvent(event)
             }
         }
