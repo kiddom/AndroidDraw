@@ -1,5 +1,6 @@
 package com.divyanshu.draw.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.Context
@@ -11,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -34,11 +36,17 @@ import java.io.ByteArrayOutputStream
 class DrawingActivity : AppCompatActivity() {
     companion object {
         private const val TOP_MARGIN_FUDGE_FACTOR = -10
+        private const val MINIMUM_SCALE_FACTOR = 1f
+        private const val MAXIMUM_SCALE_FACTOR = 10f
     }
+
+    private var currentScaleFactor: Float = 1.0f
 
     private var mostRecentlySelectedAlpha: Int = 255
 
     private var mostRecentlySelectedColorInt: Int? = null
+
+    private lateinit var scaleGestureDetector: ScaleGestureDetector
 
     override fun onBackPressed() {
         AlertDialog.Builder(this).run {
@@ -58,6 +66,9 @@ class DrawingActivity : AppCompatActivity() {
 
         mostRecentlySelectedColorInt = ResourcesCompat.getColor(resources, R.color.color_black, null)
 
+        val simpleOnScaleGestureListener = SimpleOnScaleGestureListener()
+        scaleGestureDetector = ScaleGestureDetector(this, simpleOnScaleGestureListener)
+
         setBackgroundIfNeeded()
 
         image_close_drawing.setOnClickListener {
@@ -75,9 +86,8 @@ class DrawingActivity : AppCompatActivity() {
             finish()
         }
 
-        pan_and_scale_listener.isGone = true
-
         setUpDrawCanvas()
+        setUpPanAndScaleListenerView()
         setUpDrawTools()
         setUpAddTextContainer()
         colorSelector()
@@ -310,6 +320,17 @@ class DrawingActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setUpPanAndScaleListenerView() {
+        with(pan_and_scale_listener) {
+            isGone = true
+
+            setOnTouchListener { v, event ->
+                scaleGestureDetector.onTouchEvent(event)
+            }
+        }
+    }
+
     private fun setUpTooltipTexts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             TooltipUtils.setTooltipText(image_close_drawing, R.string.close)
@@ -445,4 +466,15 @@ class DrawingActivity : AppCompatActivity() {
 
     private val Int.toPx: Float
         get() = (this * Resources.getSystem().displayMetrics.density)
+
+    private inner class SimpleOnScaleGestureListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
+            currentScaleFactor *= scaleGestureDetector.scaleFactor
+            currentScaleFactor = MINIMUM_SCALE_FACTOR.coerceAtLeast(currentScaleFactor.coerceAtMost(MAXIMUM_SCALE_FACTOR))
+            draw_view.scaleX = currentScaleFactor
+            draw_view.scaleY = currentScaleFactor
+
+            return true
+        }
+    }
 }
