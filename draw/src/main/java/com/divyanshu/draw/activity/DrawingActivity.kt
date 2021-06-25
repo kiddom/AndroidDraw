@@ -354,10 +354,20 @@ class DrawingActivity : AppCompatActivity() {
                             startY = event.y - previousTranslateY
                         }
                         MotionEvent.ACTION_MOVE -> {
-                            translateX = event.x - startX
+                            val width = draw_view.width
+                            val maximumX = ((width * currentScaleFactor) - width) / 2
+                            val minimumX = -maximumX
+                            val unadjustedTranslationX = event.x - startX
+                            translateX = unadjustedTranslationX.coerceAtLeast(minimumX).coerceAtMost(maximumX)
+
                             draw_view.translationX = translateX
 
-                            translateY = event.y - startY
+                            val height = draw_view.height
+                            val maximumY = ((height * currentScaleFactor) - height) / 2
+                            val minimumY = -maximumY
+                            val unadjustedTranslationY = event.y - startY
+                            translateY = unadjustedTranslationY.coerceAtLeast(minimumY).coerceAtMost(maximumY)
+
                             draw_view.translationY = translateY
                         }
                         MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
