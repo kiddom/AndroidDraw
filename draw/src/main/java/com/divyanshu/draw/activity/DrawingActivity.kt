@@ -344,43 +344,49 @@ class DrawingActivity : AppCompatActivity() {
             var scaleInProgress = false
 
             setOnTouchListener { v, event ->
+                val action = event.action
+                val maskedAction = action and MotionEvent.ACTION_MASK
+
+                when (maskedAction) {
+                    MotionEvent.ACTION_DOWN -> {
+                        startX = event.x - previousTranslateX
+                        startY = event.y - previousTranslateY
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val width = draw_view.width
+                        val maximumX = ((width * currentScaleFactor) - width) / 2
+                        val minimumX = -maximumX
+                        val unadjustedTranslationX = if (scaleInProgress) {
+                            translateX
+                        } else {
+                            event.x - startX
+                        }
+                        translateX = unadjustedTranslationX.coerceAtLeast(minimumX).coerceAtMost(maximumX)
+
+                        draw_view.translationX = translateX
+
+                        val height = draw_view.height
+                        val maximumY = ((height * currentScaleFactor) - height) / 2
+                        val minimumY = -maximumY
+                        val unadjustedTranslationY = if (scaleInProgress) {
+                            translateY
+                        } else {
+                            event.y - startY
+                        }
+                        translateY = unadjustedTranslationY.coerceAtLeast(minimumY).coerceAtMost(maximumY)
+
+                        draw_view.translationY = translateY
+                    }
+                    MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
+                        scaleInProgress = false
+                        previousTranslateX = translateX
+                        previousTranslateY = translateY
+                    }
+                }
+
                 val pointerCount = event.pointerCount
 
-                if (pointerCount == 1) {
-                    val action = event.action
-                    val maskedAction = action and MotionEvent.ACTION_MASK
-
-                    when (maskedAction) {
-                        MotionEvent.ACTION_DOWN -> {
-                            startX = event.x - previousTranslateX
-                            startY = event.y - previousTranslateY
-                        }
-                        MotionEvent.ACTION_MOVE -> {
-                            if (!scaleInProgress) {
-                                val width = draw_view.width
-                                val maximumX = ((width * currentScaleFactor) - width) / 2
-                                val minimumX = -maximumX
-                                val unadjustedTranslationX = event.x - startX
-                                translateX = unadjustedTranslationX.coerceAtLeast(minimumX).coerceAtMost(maximumX)
-
-                                draw_view.translationX = translateX
-
-                                val height = draw_view.height
-                                val maximumY = ((height * currentScaleFactor) - height) / 2
-                                val minimumY = -maximumY
-                                val unadjustedTranslationY = event.y - startY
-                                translateY = unadjustedTranslationY.coerceAtLeast(minimumY).coerceAtMost(maximumY)
-
-                                draw_view.translationY = translateY
-                            }
-                        }
-                        MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
-                            scaleInProgress = false
-                            previousTranslateX = translateX
-                            previousTranslateY = translateY
-                        }
-                    }
-                } else if (pointerCount == 2) {
+                if (pointerCount == 2) {
                     scaleInProgress = true
                 }
 
