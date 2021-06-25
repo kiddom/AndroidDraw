@@ -341,6 +341,8 @@ class DrawingActivity : AppCompatActivity() {
         with(pan_and_scale_listener) {
             isGone = true
 
+            var scaleInProgress = false
+
             setOnTouchListener { v, event ->
                 val pointerCount = event.pointerCount
 
@@ -354,27 +356,32 @@ class DrawingActivity : AppCompatActivity() {
                             startY = event.y - previousTranslateY
                         }
                         MotionEvent.ACTION_MOVE -> {
-                            val width = draw_view.width
-                            val maximumX = ((width * currentScaleFactor) - width) / 2
-                            val minimumX = -maximumX
-                            val unadjustedTranslationX = event.x - startX
-                            translateX = unadjustedTranslationX.coerceAtLeast(minimumX).coerceAtMost(maximumX)
+                            if (!scaleInProgress) {
+                                val width = draw_view.width
+                                val maximumX = ((width * currentScaleFactor) - width) / 2
+                                val minimumX = -maximumX
+                                val unadjustedTranslationX = event.x - startX
+                                translateX = unadjustedTranslationX.coerceAtLeast(minimumX).coerceAtMost(maximumX)
 
-                            draw_view.translationX = translateX
+                                draw_view.translationX = translateX
 
-                            val height = draw_view.height
-                            val maximumY = ((height * currentScaleFactor) - height) / 2
-                            val minimumY = -maximumY
-                            val unadjustedTranslationY = event.y - startY
-                            translateY = unadjustedTranslationY.coerceAtLeast(minimumY).coerceAtMost(maximumY)
+                                val height = draw_view.height
+                                val maximumY = ((height * currentScaleFactor) - height) / 2
+                                val minimumY = -maximumY
+                                val unadjustedTranslationY = event.y - startY
+                                translateY = unadjustedTranslationY.coerceAtLeast(minimumY).coerceAtMost(maximumY)
 
-                            draw_view.translationY = translateY
+                                draw_view.translationY = translateY
+                            }
                         }
                         MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
+                            scaleInProgress = false
                             previousTranslateX = translateX
                             previousTranslateY = translateY
                         }
                     }
+                } else if (pointerCount == 2) {
+                    scaleInProgress = true
                 }
 
                 scaleGestureDetector.onTouchEvent(event)
