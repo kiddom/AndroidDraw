@@ -150,8 +150,8 @@ class DrawingActivity : AppCompatActivity() {
     private fun setUpDrawTools() {
         image_draw_pan_and_scale.setOnClickListener {
             updateSelectedState(it)
-
-            pan_and_scale_listener.isVisible = it.isSelected
+            toggleDrawTools(showView = false)
+            toggleAuxiliaryViews()
         }
 
         with(erase_all) {
@@ -171,8 +171,6 @@ class DrawingActivity : AppCompatActivity() {
             toggleDrawTools(selected)
 
             toggleAuxiliaryViews(erase_all)
-
-            draw_view.isEraserOn = selected
         }
 
         image_draw_width.setOnClickListener {
@@ -185,18 +183,18 @@ class DrawingActivity : AppCompatActivity() {
             updateSelectedState(it)
             toggleDrawTools(it.isSelected)
             toggleAuxiliaryViews(circle_view_opacity, seekBar_opacity)
-            draw_view.isEraserOn = false
         }
 
         image_draw_color.setOnClickListener {
             updateSelectedState(it)
             toggleDrawTools(it.isSelected)
             toggleAuxiliaryViews(draw_color_palette)
-            draw_view.isEraserOn = false
         }
 
         image_draw_text.setOnClickListener {
             it.isEnabled = false
+            image_draw_pan_and_scale.isSelected = false
+            pan_and_scale_listener.isGone = true
 
             add_text_container.isVisible = true
             val addText = layoutInflater.inflate(R.layout.add_text, add_text_container, false)
@@ -507,6 +505,9 @@ class DrawingActivity : AppCompatActivity() {
         setOf(circle_view_opacity, circle_view_width, draw_color_palette, erase_all, seekBar_opacity, seekBar_width).forEach {
             it.isInvisible = !viewsToShow.contains(it)
         }
+
+        pan_and_scale_listener.isVisible = image_draw_pan_and_scale.isSelected
+        draw_view.isEraserOn = image_draw_eraser.isSelected
     }
 
     private fun toggleDrawTools(showView: Boolean) {
@@ -519,12 +520,12 @@ class DrawingActivity : AppCompatActivity() {
         draw_tools.animate().translationY(translationY.toPx)
     }
 
-    private fun updateSelectedState(selectedView: View) {
+    private fun updateSelectedState(clickedView: View) {
         val toolViews = setOf(image_draw_color, image_draw_eraser, image_draw_opacity,
                 image_draw_pan_and_scale, image_draw_width)
 
         toolViews.forEach {
-            it.isSelected = (it == selectedView && !it.isSelected)
+            it.isSelected = (it == clickedView && !it.isSelected)
         }
     }
 
