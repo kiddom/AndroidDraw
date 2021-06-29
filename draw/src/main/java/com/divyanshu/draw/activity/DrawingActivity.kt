@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
@@ -215,11 +216,11 @@ class DrawingActivity : AppCompatActivity() {
             }
 
             val moveView = addText.findViewById<View>(R.id.move)
-            var touchX = 0
-            var touchY = 0
+            var touchPointX = 0
+            var touchPointY = 0
             val onTouchListener: (View, MotionEvent) -> Boolean = { v, event ->
-                touchX = event.x.toInt()
-                touchY = event.y.toInt()
+                touchPointX = event.x.toInt()
+                touchPointY = event.y.toInt()
 
                 v.performClick()
 
@@ -235,9 +236,9 @@ class DrawingActivity : AppCompatActivity() {
                 when (action) {
                     DragEvent.ACTION_DROP -> {
                         val newX = dragEvent.x.toInt()
-                        val newMarginStart = newX - touchX
+                        val newMarginStart = newX - touchPointX
                         val newY = dragEvent.y.toInt()
-                        val newTopMargin = newY - touchY
+                        val newTopMargin = newY - touchPointY
 
                         addText.updateLayoutParams<RelativeLayout.LayoutParams> {
                             marginStart = newMarginStart
@@ -265,12 +266,21 @@ class DrawingActivity : AppCompatActivity() {
 
                 val clipData = ClipData.newPlainText("", "")
                 val dragShadowBuilder = object : View.DragShadowBuilder(addText) {
+                    override fun onDrawShadow(canvas: Canvas) {
+                        canvas.scale(currentScaleFactor, currentScaleFactor)
+                        addText.draw(canvas)
+                    }
+
                     override fun onProvideShadowMetrics(
                             outShadowSize: Point, outShadowTouchPoint: Point
                     ) {
-                        super.onProvideShadowMetrics(outShadowSize, outShadowTouchPoint)
+                        val scaledSizeX = (view.width * currentScaleFactor).toInt()
+                        val scaledSizeY = (view.height * currentScaleFactor).toInt()
+                        outShadowSize.set(scaledSizeX, scaledSizeY)
 
-                        outShadowTouchPoint.set(touchX, touchY)
+                        val scaledTouchPointX = (touchPointX * currentScaleFactor).toInt()
+                        val sclaedTouchPointY = (touchPointY * currentScaleFactor).toInt()
+                        outShadowTouchPoint.set(scaledTouchPointX, sclaedTouchPointY)
                     }
                 }
                 val flags = 0
