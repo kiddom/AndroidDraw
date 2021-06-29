@@ -31,10 +31,10 @@
         android:id="@+id/pan_and_scale_listener"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/draw_view"
-        app:layout_constraintEnd_toEndOf="@id/draw_view"
-        app:layout_constraintStart_toStartOf="@id/draw_view"
-        app:layout_constraintTop_toTopOf="@id/draw_view" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
         android:id="@+id/add_text_container"
