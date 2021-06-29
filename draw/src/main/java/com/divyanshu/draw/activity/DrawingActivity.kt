@@ -361,9 +361,6 @@ class DrawingActivity : AppCompatActivity() {
                         }
                         translateX = unadjustedTranslationX.coerceAtLeast(minimumX).coerceAtMost(maximumX)
 
-                        draw_view.translationX = translateX
-                        this@DrawingActivity.background.translationX = translateX
-
                         val height = draw_view.height
                         val maximumY = ((height * currentScaleFactor) - height) / 2
                         val minimumY = -maximumY
@@ -374,8 +371,10 @@ class DrawingActivity : AppCompatActivity() {
                         }
                         translateY = unadjustedTranslationY.coerceAtLeast(minimumY).coerceAtMost(maximumY)
 
-                        draw_view.translationY = translateY
-                        this@DrawingActivity.background.translationY = translateY
+                        setOf(add_text_container, this@DrawingActivity.background, draw_view).forEach {
+                            it.translationX = translateX
+                            it.translationY = translateY
+                        }
                     }
                     MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
                         scaleInProgress = false
@@ -539,14 +538,9 @@ class DrawingActivity : AppCompatActivity() {
             currentScaleFactor *= scaleGestureDetector.scaleFactor
             currentScaleFactor = MINIMUM_SCALE_FACTOR.coerceAtLeast(currentScaleFactor.coerceAtMost(MAXIMUM_SCALE_FACTOR))
 
-            with(draw_view) {
-                scaleX = currentScaleFactor
-                scaleY = currentScaleFactor
-            }
-
-            with(background) {
-                scaleX = currentScaleFactor
-                scaleY = currentScaleFactor
+            setOf(add_text_container, background, draw_view).forEach {
+                it.scaleX = currentScaleFactor
+                it.scaleY = currentScaleFactor
             }
 
             return true
