@@ -193,8 +193,6 @@ class DrawingActivity : AppCompatActivity() {
 
         image_draw_text.setOnClickListener {
             it.isEnabled = false
-            image_draw_pan_and_scale.isSelected = false
-            pan_and_scale_listener.isGone = true
 
             add_text_container.isVisible = true
             val addText = layoutInflater.inflate(R.layout.add_text, add_text_container, false)
